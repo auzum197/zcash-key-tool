@@ -1,0 +1,34 @@
+[package]
+name = "derivator"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.104"
+argon2 = "0.5"
+bip0039 = "0.14"
+chacha20poly1305 = "0.11"
+clap = { version = "4", features = ["derive"] }
+getrandom = "0.4.3"
+hex = "0.4.3"
+libc = "0.2.189"
+orchard = { version = "0.15", default-features = false }
+rpassword = "7"
+sapling-crypto = "0.7"
+secrecy = "0.10"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+zcash_address = "0.13"
+zcash_keys = { version = "0.16", features = ["orchard", "sapling", "transparent-inputs", "transparent-key-encoding"] }
+zcash_protocol = "0.10"
+zcash_transparent = { version = "0.10", default-features = false }
+zeroize = "1"
+zip32 = "0.2"
+
+[dev-dependencies]
+tempfile = "3.27.0"
+
+# Unoptimised Argon2 and the Zcash proving primitives dominate the test suite.
+# Our own code stays unoptimised so debugging still works.
+[profile.dev.package."*"]
+opt-level = 2
