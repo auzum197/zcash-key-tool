@@ -251,6 +251,10 @@ pub struct DisplayArgs {
     #[arg(long)]
     pub all: bool,
 
+    /// Render the selected field as a QR code for the terminal
+    #[arg(long, conflicts_with_all = ["json", "all"])]
+    pub qr: bool,
+
     #[command(flatten)]
     pub view: ViewArgs,
 

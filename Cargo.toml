@@ -13,6 +13,7 @@ getrandom = "0.4.3"
 hex = "0.4.3"
 libc = "0.2.189"
 orchard = { package = "zakura-orchard", git = "https://github.com/auzum197/zakura-common", rev = "a4551d88767de37fa139c71a343eaa1e027b5f5c", default-features = false }
+qrcode = { version = "0.14.1", default-features = false }
 rpassword = "7"
 sapling-crypto = { package = "zakura-sapling-crypto", git = "https://github.com/auzum197/zakura-common", rev = "a4551d88767de37fa139c71a343eaa1e027b5f5c" }
 secrecy = "0.10"
