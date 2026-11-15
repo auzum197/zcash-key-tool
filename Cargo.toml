@@ -12,16 +12,16 @@ clap = { version = "4", features = ["derive"] }
 getrandom = "0.4.3"
 hex = "0.4.3"
 libc = "0.2.189"
-orchard = { version = "0.15", default-features = false }
+orchard = { package = "zakura-orchard", git = "https://github.com/auzum197/zakura-common", rev = "a4551d88767de37fa139c71a343eaa1e027b5f5c", default-features = false }
 rpassword = "7"
-sapling-crypto = "0.7"
+sapling-crypto = { package = "zakura-sapling-crypto", git = "https://github.com/auzum197/zakura-common", rev = "a4551d88767de37fa139c71a343eaa1e027b5f5c" }
 secrecy = "0.10"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
-zcash_address = "0.13"
-zcash_keys = { version = "0.16", features = ["orchard", "sapling", "transparent-inputs", "transparent-key-encoding"] }
-zcash_protocol = "0.10"
-zcash_transparent = { version = "0.10", default-features = false }
+zcash_address = { package = "zakura-address", git = "https://github.com/auzum197/zakura-common", rev = "a4551d88767de37fa139c71a343eaa1e027b5f5c" }
+zcash_keys = { package = "zakura-keys", git = "https://github.com/auzum197/zakura-common", rev = "a4551d88767de37fa139c71a343eaa1e027b5f5c", features = ["orchard", "sapling", "transparent-inputs", "transparent-key-encoding"] }
+zcash_protocol = { package = "zakura-protocol", git = "https://github.com/auzum197/zakura-common", rev = "a4551d88767de37fa139c71a343eaa1e027b5f5c" }
+zcash_transparent = { package = "zakura-transparent", git = "https://github.com/auzum197/zakura-common", rev = "a4551d88767de37fa139c71a343eaa1e027b5f5c", default-features = false }
 zeroize = "1"
 zip32 = "0.2"
 
