@@ -453,34 +453,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "derivator"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "argon2",
- "bip0039",
- "chacha20poly1305",
- "clap",
- "getrandom 0.4.3",
- "hex",
- "libc",
- "qrcode",
- "rpassword",
- "secrecy 0.10.3",
- "serde",
- "serde_json",
- "tempfile",
- "zakura-address",
- "zakura-keys",
- "zakura-orchard",
- "zakura-protocol",
- "zakura-sapling-crypto",
- "zakura-transparent",
- "zeroize",
- "zip32",
-]
-
-[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1831,6 +1803,34 @@ dependencies = [
  "sha1",
  "sha2 0.10.9",
  "thiserror",
+]
+
+[[package]]
+name = "zcash-key-tool"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "argon2",
+ "bip0039",
+ "chacha20poly1305",
+ "clap",
+ "getrandom 0.4.3",
+ "hex",
+ "libc",
+ "qrcode",
+ "rpassword",
+ "secrecy 0.10.3",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "zakura-address",
+ "zakura-keys",
+ "zakura-orchard",
+ "zakura-protocol",
+ "zakura-sapling-crypto",
+ "zakura-transparent",
+ "zeroize",
+ "zip32",
 ]
 
 [[package]]

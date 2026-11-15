@@ -1,8 +1,8 @@
 use clap::Parser;
 use clap::error::{ContextKind, ContextValue, ErrorKind};
-use derivator::cli::{Cli, Command};
-use derivator::{commands, hygiene};
 use std::process::ExitCode;
+use zkeytool::cli::{Cli, Command};
+use zkeytool::{commands, hygiene};
 
 fn main() -> ExitCode {
     hygiene::disable_core_dumps();

@@ -1,7 +1,15 @@
 [package]
-name = "derivator"
+name = "zcash-key-tool"
 version = "0.1.0"
 edition = "2024"
+
+[lib]
+name = "zkeytool"
+path = "src/lib.rs"
+
+[[bin]]
+name = "zkeytool"
+path = "src/main.rs"
 
 [dependencies]
 anyhow = "1.0.104"

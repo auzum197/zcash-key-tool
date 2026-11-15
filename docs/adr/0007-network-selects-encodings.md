@@ -5,7 +5,7 @@ type and a table of human-readable prefixes.
 
 `zcash_protocol::consensus::Network` carries only mainnet and testnet. Regtest
 lives outside it as `LocalNetwork`, which demands ten or more activation
-heights. We define `derivator::Network { Main, Test, Regtest }` in
+heights. We define `zkeytool::Network { Main, Test, Regtest }` in
 `src/network.rs` and implement `Parameters` ourselves — the trait is not
 sealed. `network_type()` is the entire implementation. `activation_height()`
 returns `None` for every upgrade, because there is no chain to activate

@@ -9,7 +9,7 @@ use crate::view::{Field, Pool};
 
 #[derive(Parser, Debug)]
 #[command(
-    name = "derivator",
+    name = "zkeytool",
     about = "Offline Zcash key derivation",
     long_about = "Creates, imports and inspects Zcash key material. Never touches the network."
 )]

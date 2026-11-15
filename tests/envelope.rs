@@ -1,10 +1,10 @@
 //! Properties the Wallet File container must hold.
 
-use derivator::envelope::{HEADER_LEN, KdfParams, decrypt, encrypt, rekey};
-use derivator::network::Network;
-use derivator::wallet::{RootSecret, Wallet};
 use secrecy::SecretString;
 use zeroize::Zeroizing;
+use zkeytool::envelope::{HEADER_LEN, KdfParams, decrypt, encrypt, rekey};
+use zkeytool::network::Network;
+use zkeytool::wallet::{RootSecret, Wallet};
 
 fn passphrase(text: &str) -> SecretString {
     SecretString::from(text.to_owned())
