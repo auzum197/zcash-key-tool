@@ -32,7 +32,7 @@ impl Fixture {
     }
 
     fn run_with_stdin(&self, args: &[&str], stdin: &str) -> Output {
-        let mut child = Command::new(env!("CARGO_BIN_EXE_derivator"))
+        let mut child = Command::new(env!("CARGO_BIN_EXE_zkeytool"))
             .args(args)
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())

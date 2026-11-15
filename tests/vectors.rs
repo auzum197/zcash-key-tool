@@ -5,15 +5,15 @@
 //! Checking against `zcash_keys`' own vectors would only prove that the crate
 //! agrees with itself.
 
-use derivator::network::Network;
-use derivator::view::{Pool, ViewParams, derive};
-use derivator::wallet::{RootSecret, Wallet};
 use secrecy::SecretString;
 use serde_json::Value;
 use zcash_keys::keys::{UnifiedFullViewingKey, UnifiedSpendingKey};
 use zcash_protocol::consensus::NetworkConstants;
 use zeroize::Zeroizing;
 use zip32::{AccountId, ChildIndex, DiversifierIndex, Scope};
+use zkeytool::network::Network;
+use zkeytool::view::{Pool, ViewParams, derive};
+use zkeytool::wallet::{RootSecret, Wallet};
 
 fn load(name: &str) -> Vec<Vec<Value>> {
     let raw = std::fs::read_to_string(format!(
@@ -220,7 +220,7 @@ fn path_and_account_agree() {
     let by_account = derive(&wallet, &params(7, 0, None), false).expect("account view");
 
     let mut by_path = params(0, 0, None);
-    by_path.path = Some(derivator::view::parse_path("m/32'/133'/7'").expect("valid path"));
+    by_path.path = Some(zkeytool::view::parse_path("m/32'/133'/7'").expect("valid path"));
     let by_path = derive(&wallet, &by_path, false).expect("path view");
 
     assert_eq!(by_account.unified_address, by_path.unified_address);
@@ -228,7 +228,7 @@ fn path_and_account_agree() {
     assert_eq!(by_path.path.as_deref(), Some("m/32'/133'/7'"));
 }
 
-/// The same ZIP-32 vectors as above, but driven through derivator's own
+/// The same ZIP-32 vectors as above, but driven through zkeytool's own
 /// `--path` surface: `derive_by_path`, `sapling_only`, and the `reveal`
 /// encoding, with the vendored xsk bytes as the anchor.
 #[test]
@@ -245,7 +245,7 @@ fn nonstandard_paths_flow_through_the_path_surface() {
 
         let mut with_path = params(0, 0, None);
         with_path.index_given = false;
-        with_path.path = Some(derivator::view::parse_path(raw).expect("valid path"));
+        with_path.path = Some(zkeytool::view::parse_path(raw).expect("valid path"));
         let view = derive(&wallet, &with_path, true).expect("path view");
 
         let encoded = view
@@ -275,7 +275,7 @@ fn parse_path_rejects_what_zip32_cannot_hold() {
         ("m/x'", "not a derivation path element"),
     ];
     for (raw, fragment) in cases {
-        let error = derivator::view::parse_path(raw).expect_err("parsed anyway");
+        let error = zkeytool::view::parse_path(raw).expect_err("parsed anyway");
         assert!(error.to_string().contains(fragment), "{raw}: {error}");
     }
 }
@@ -295,7 +295,7 @@ fn a_viewing_root_cannot_walk_a_path() {
     };
 
     let mut with_path = params(0, 0, None);
-    with_path.path = Some(derivator::view::parse_path("m/1'").expect("valid path"));
+    with_path.path = Some(zkeytool::view::parse_path("m/1'").expect("valid path"));
     let error = derive(&watch, &with_path, false).expect_err("a UFVK holds no seed");
     assert!(
         error.to_string().contains("needs a Mnemonic or a seed"),
@@ -592,7 +592,7 @@ fn testnet_paths_use_coin_type_1() {
     let testnet = |account, path: Option<&str>| {
         let mut p = params(account, 0, None);
         p.network = Network::Test;
-        p.path = path.map(|raw| derivator::view::parse_path(raw).expect("valid path"));
+        p.path = path.map(|raw| zkeytool::view::parse_path(raw).expect("valid path"));
         p
     };
 
@@ -710,6 +710,6 @@ fn transparent_receiver_is_refused_above_the_bip32_limit() {
 
 #[test]
 fn unhardened_paths_are_refused() {
-    let error = derivator::view::parse_path("m/32'/133'/0").expect_err("must be hardened");
+    let error = zkeytool::view::parse_path("m/32'/133'/0").expect_err("must be hardened");
     assert!(error.to_string().contains("not hardened"), "{error}");
 }

@@ -137,7 +137,7 @@ pub fn create(args: CreateArgs) -> Result<()> {
     }
 
     eprintln!(
-        "Wrote {}. Run `derivator reveal -f {}` to record your Mnemonic.",
+        "Wrote {}. Run `zkeytool reveal -f {}` to record your Mnemonic.",
         args.file.display(),
         args.file.display()
     );
