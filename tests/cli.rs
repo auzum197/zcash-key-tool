@@ -1378,3 +1378,36 @@ fn all_and_full_json_are_the_untouched_dumps() {
     assert_eq!(as_str(&full, "unified_address"), SEED_UA);
     assert_eq!(as_str(&full, "network"), "main");
 }
+
+#[test]
+fn qr_renders_one_scalar_field() {
+    let fixture = Fixture::new();
+    let file = seed_wallet(&fixture, "w.wallet");
+    let pass = wallet(&fixture.path("pass.txt"));
+    let display = |extra: &[&str]| {
+        let mut args = vec!["display", "-f", &file, "--file-passphrase-file", &pass];
+        args.extend_from_slice(extra);
+        fixture.run(&args)
+    };
+
+    let ufvk = display(&["--field", "ufvk", "--qr"]);
+    assert!(ufvk.status.success());
+    let art = String::from_utf8(ufvk.stdout).expect("utf-8");
+    assert!(art.contains('█'), "half-block modules");
+    assert!(!art.contains("uview1"), "the key is drawn, not printed");
+
+    let ua = display(&["--qr"]);
+    assert!(ua.status.success());
+    assert_ne!(ua.stdout, art.as_bytes(), "the default field is the UA");
+
+    for flag in ["--json", "--all"] {
+        let clash = display(&["--qr", flag]);
+        assert_eq!(clash.status.code(), Some(2), "--qr conflicts with {flag}");
+        assert!(clash.stdout.is_empty());
+    }
+
+    let list = display(&["--field", "receivers", "--qr"]);
+    assert_eq!(list.status.code(), Some(1));
+    assert!(list.stdout.is_empty());
+    assert!(String::from_utf8_lossy(&list.stderr).contains("is a list"));
+}

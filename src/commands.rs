@@ -268,6 +268,8 @@ pub fn display(args: DisplayArgs) -> Result<()> {
         render::print(&view, false)
     } else if args.view.json && args.field.is_none() {
         render::print(&view, true)
+    } else if args.qr {
+        render::qr(&view, args.field.unwrap_or(Field::Ua))
     } else {
         render::field(&view, args.field.unwrap_or(Field::Ua), args.view.json)
     }

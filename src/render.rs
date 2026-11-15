@@ -1,5 +1,7 @@
 use anyhow::{Result, bail};
 use clap::ValueEnum;
+use qrcode::QrCode;
+use qrcode::render::unicode::Dense1x2;
 
 use crate::view::{Derivation, Field, FieldValue};
 
@@ -23,13 +25,9 @@ pub fn field(view: &Derivation, field: Field, json: bool) -> Result<()> {
     let value = view.field(field);
 
     if matches!(value, FieldValue::Text(None) | FieldValue::Number(None)) {
-        let name = field
-            .to_possible_value()
-            .expect("every Field has a canonical name")
-            .get_name()
-            .to_owned();
         bail!(
-            "no value for field '{name}' in this wallet. run 'display --all' to see what's available, or pick another field with --field"
+            "no value for field '{}' in this wallet. run 'display --all' to see what's available, or pick another field with --field",
+            name(field)
         );
     }
 
@@ -49,6 +47,35 @@ pub fn field(view: &Derivation, field: Field, json: bool) -> Result<()> {
             _ => unreachable!("absent scalars bailed above"),
         }
     }
+    Ok(())
+}
+
+fn name(field: Field) -> String {
+    field
+        .to_possible_value()
+        .expect("every Field has a canonical name")
+        .get_name()
+        .to_owned()
+}
+
+/// Render one scalar field as a QR code. The same absent-field rule as
+/// [`field`] applies, and a list has no single value to encode.
+pub fn qr(view: &Derivation, field: Field) -> Result<()> {
+    let text = match view.field(field) {
+        FieldValue::Text(Some(text)) => text,
+        FieldValue::Number(Some(number)) => number.to_string(),
+        FieldValue::List(_) => bail!(
+            "field '{}' is a list and cannot be a QR code. pick a single-value field with --field",
+            name(field)
+        ),
+        FieldValue::Text(None) | FieldValue::Number(None) => bail!(
+            "no value for field '{}' in this wallet. run 'display --all' to see what's available, or pick another field with --field",
+            name(field)
+        ),
+    };
+
+    let code = QrCode::new(text.as_bytes())?;
+    println!("{}", code.render::<Dense1x2>().build());
     Ok(())
 }
 
